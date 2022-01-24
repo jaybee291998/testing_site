@@ -8,7 +8,7 @@ class UserLoginForm(forms.Form):
 	password 			= forms.CharField()
 
 	def clean_username(self):
-		sub_cleaned_username = super().clean_username()
+		sub_cleaned_username = super(UserLoginForm, self).clean_username()
 
 		if not User.objects.filter(username=sub_cleaned_username).exists():
 			raise forms.ValidationError(f'User: {sub_cleaned_username} does not exists.')
