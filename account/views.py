@@ -22,7 +22,7 @@ def login_view(request):
 	return render(request, 'account/login.html', context)
 
 @login_required
-def logout(request):
+def logout_view(request):
 	logout(request)
 	return redirect('login')
 
