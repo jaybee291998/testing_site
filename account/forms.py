@@ -5,7 +5,7 @@ User = get_user_model()
 
 class UserLoginForm(forms.Form):
 	username 			= forms.CharField()
-	password 			= forms.CharField()
+	password 			= forms.CharField(widget=forms.PasswordInput())
 
 	def clean_username(self):
 		sub_cleaned_username = self.cleaned_data.get('username')
