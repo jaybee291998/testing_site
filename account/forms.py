@@ -25,7 +25,7 @@ class UserLoginForm(forms.Form):
 
 		return sub_cleaned_password
 
-class UserRegisterForm(form.Form):
+class UserRegisterForm(forms.Form):
 	username 			= forms.CharField()
 	password 			= forms.CharField(widget=forms.PasswordInput())
 	password2 			= forms.CharField(widget=forms.PasswordInput())
