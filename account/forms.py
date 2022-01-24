@@ -24,3 +24,28 @@ class UserLoginForm(forms.Form):
 			raise forms.ValidationError("Inavalid Password")
 
 		return sub_cleaned_password
+
+class UserRegisterForm(form.Form):
+	username 			= forms.CharField()
+	password 			= forms.CharField(widget=forms.PasswordInput())
+	password2 			= forms.CharField(widget=forms.PasswordInput())
+
+	def clean_username(self):
+		sub_cleaned_username = self.cleaned_data.get('username')
+
+		if User.objects.filter(username=sub_cleaned_username).exists():
+			raise forms.ValidationError("User is already registered")
+
+		return sub_cleaned_username
+
+	def clean(self):
+		password = self.cleaned_data.get('password')
+		password2 = self.cleaned_data.get('password2')
+
+		if password != password2:
+			raise forms.ValidationError("Password must match")
+
+		if len(password) < 8:
+			raise forms.ValidationError("Password must be atleast 8 characters")
+
+		return super().clean()
