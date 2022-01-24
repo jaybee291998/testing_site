@@ -22,3 +22,5 @@ class UserLoginForm(forms.Form):
 
 		if not user:
 			raise forms.ValidationError("Inavalid Password")
+
+		return sub_cleaned_password
