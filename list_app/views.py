@@ -30,11 +30,10 @@ class ListList(generics.ListCreateAPIView):
 
 class ListDetail(generics.RetrieveUpdateDestroyAPIView):
 	serializer_class = ListSerializer
-	permission_classes = [permissions.IsAuthenticated]
+	permission_classes = [permissions.IsAuthenticated, IsOwner]
 	# override get_queryset so that only the users list will be retrieved
 	def get_queryset(self):
-		# return self.request.user.my_list.all()	
-		return List.objects.all()
+		return self.request.user.my_list.all()	
 
 # view to serve the initial html doc for the list app
 @login_required
