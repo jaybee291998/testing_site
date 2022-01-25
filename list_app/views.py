@@ -21,7 +21,7 @@ class ListList(generics.ListCreateAPIView):
 	# override
 	# override get_queryset so that only the users list will be retrieved
 	def get_queryset(self):
-		return List.objects.filter(user=request.user)
+		return List.objects.filter(user=self.request.user)
 
 	# override the perform_create so that the user is saved
 	def perform_create(self, serializer):
