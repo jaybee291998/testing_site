@@ -8,15 +8,16 @@ from django.contrib.auth.decorators import login_required
 
 from rest_framework.response import Response 
 from rest_framework.views import APIView
-from rest_framework import status, generics
+from rest_framework import status, generics, permissions
 
 
 from .models import List
 from .serializer import ListSerializer
 # Create your views here.
-@method_decorator(login_required, name='dispatch')
+# @method_decorator(login_required, name='dispatch')
 class ListList(generics.ListCreateAPIView):
 	serializer_class = ListSerializer
+	permission_classes = [permissions.IsAuthenticated]
 
 	# override
 	# override get_queryset so that only the users list will be retrieved
