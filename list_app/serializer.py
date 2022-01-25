@@ -5,3 +5,11 @@ class ListSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = List 
 		fields = ['id', 'user', 'name', 'content', 'last_modified', 'timestamp']
+		# extra_kwargs = {
+		# 	'user':{
+		# 		'default':serializers.CreateOnlyDefault(
+		# 			serializers.CurrentUserDefault()
+		# 		),
+		# 		'read_only':True
+		# 	}
+		# }

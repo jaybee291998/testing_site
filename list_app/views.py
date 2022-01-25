@@ -25,7 +25,9 @@ class ListList(generics.ListCreateAPIView):
 
 	# override the perform_create so that the user is saved
 	def perform_create(self, serializer):
+		print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
 		serializer.save(user=self.request.user)
+		print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
 
 @method_decorator(login_required, name='dispatch')
 class ListDetail(generics.RetrieveUpdateDestroyAPIView):
