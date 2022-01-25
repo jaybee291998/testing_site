@@ -5,6 +5,14 @@
 {% block content %}
 	<div id="create-update-div">
 		<h1>Create</h1>
+		<label for="name">Name:</label>
+		<input type="text" name="title" maxlength="64" required id="name">
+		<br>
+		<textarea id="content-textarea">
+			hi
+		</textarea>
+		<button id="post-btn">Post</button>
+		<button id="update-btn">Update</button>
 	</div>
 
 	<div id="list-div">
@@ -26,6 +34,17 @@
 	<script type="text/javascript" src="{% static 'js/ui.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/api.js' %}"></script>
 	<script type="text/javascript">
+// initialize tiny mce
+		tinymce.init({
+		    selector: '#content-textarea',
+			plugins: '',
+			toolbar: 'a11ycheck addcomment showcomments casechange checklist code export formatpainter pageembed permanentpen table',
+			toolbar_mode: 'floating', 
+			tinycomments_mode: 'embedded',
+			tinycomments_author: 'Author name', 
+		});
+
+
 		const post_domain = '{{list_api}}';
 		const detail_domain = '{{detail_api}}';
 
