@@ -37,9 +37,10 @@ class ListDetail(generics.RetrieveUpdateDestroyAPIView):
 # view to serve the initial html doc for the list app
 @login_required
 def list_app_view(request):
+	detail_link = reverse_lazy('listdetail-api', kwargs={'pk':0})
 	context = {
-		'list_api':'list-api',
-		'detail_api':'detail-api'
+		'list_api':reverse_lazy('listlist-api'),
+		'detail_api':detail_link[0:len(detail_link)]
 	}
 
 	return render(request, 'list_app/list_app.html', context)
