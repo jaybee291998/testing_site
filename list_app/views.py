@@ -23,14 +23,6 @@ class ListList(generics.ListCreateAPIView):
 	def get_queryset(self):
 		return self.request.user.my_list.all()
 
-	def post(self, serializer):
-		print("YEAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
-		serializer(data=self.request.data)
-		if serializer.is_valid():
-			serializer.save(user=self.request.user)
-			return Response(serializer.data, status=status.HTTP_201_CREATED)
-		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 	# override the perform_create so that the user is saved
 	def perform_create(self, serializer):
 		serializer.save(user=self.request.user)
