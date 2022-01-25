@@ -3,7 +3,7 @@
 	List App
 {% endblock %}
 {% block content %}
-	<div id="create-div">
+	<div id="create-update-div">
 		<h1>Create</h1>
 		<input type="text" name="search-bar" id="search-bar" placeholder="search">
 	</div>
@@ -18,14 +18,11 @@
 		<h1>Detail</h1>
 	</div>
 
-	<div id="update-div">
-		<h1>Update</h1>
-	</div>
-
 	<div id="delete-div">
 		<h1>Delete</h1>
 	</div>
 	{% load static %}
+	<script src="https://cdn.tiny.cloud/1/u9jme0ubzunc1ikuzefidbdc7pnodyglzq5mnqh5tkss5lui/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 	<script type="text/javascript" src="{% static 'js/ui.js' %}"></script>
 	<script type="text/javascript">
 		
