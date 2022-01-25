@@ -25,7 +25,7 @@ class ListList(generics.ListCreateAPIView):
 
 	def post(self, serializer):
 		print("YEAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
-		serializer(data=request.data)
+		serializer(data=self.request.data)
 		if serializer.is_valid():
 			serializer.save(user=self.request.user)
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
