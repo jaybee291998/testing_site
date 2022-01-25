@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status, generics, permissions
 
-
+from .permissions import IsOwner
 from .models import List
 from .serializer import ListSerializer
 # Create your views here.
@@ -28,12 +28,13 @@ class ListList(generics.ListCreateAPIView):
 	def perform_create(self, serializer):
 		serializer.save(user=self.request.user)
 
-@method_decorator(login_required, name='dispatch')
 class ListDetail(generics.RetrieveUpdateDestroyAPIView):
 	serializer_class = ListSerializer
+	permission_classes = [permissions.IsAuthenticated, IsOwner]
 	# override get_queryset so that only the users list will be retrieved
 	def get_queryset(self):
-		return self.request.user.my_list.all()	
+		# return self.request.user.my_list.all()	
+		return List.objects.all()
 
 # view to serve the initial html doc for the list app
 @login_required
