@@ -38,8 +38,8 @@ class ListDetail(generics.RetrieveUpdateDestroyAPIView):
 @login_required
 def list_app_view(request):
 	context = {
-		'list-api':'list-api',
-		'detail-api':'detail-api'
+		'list_api':'list-api',
+		'detail_api':'detail-api'
 	}
 
 	return render(request, 'list_app/list_app.html', context)
