@@ -37,7 +37,7 @@ class ListDetail(generics.RetrieveUpdateDestroyAPIView):
 # view to serve the initial html doc for the list app
 @login_required
 def list_app_view(request):
-	content = {
+	context = {
 		'list-api':'list-api',
 		'detail-api':'detail-api'
 	}
