@@ -60,6 +60,13 @@
 
 		const nameInput = document.getElementById('name');
 
+		// buttons 
+		const postBtn = document.getElementById('post-btn');
+		const updateBtn = document.getElementById('update-btn');
+
+		// bind buttons to certain actions
+		postBtn.onclick = postAction;
+
 		function showDiv(div_to_show){
 			return showDivBase(div_to_show, divList);
 		}
