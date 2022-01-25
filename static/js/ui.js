@@ -1,15 +1,4 @@
-const createUpdateDiv = document.getElementById('create-update-div');
-const listDiv = document.getElementById('list-div');
-const detailDiv = document.getElementById('detail-div');
-const updateDiv = document.getElementById('update-div');
-const deleteDiv = document.getElementById('delete-div');
-const tableDiv = document.getElementById('table-div');
-
-const divList = [createUpdateDiv, listDiv, detailDiv, deleteDiv];
-const p = document.createElement('P');
-p.textContent = "JS is working";
-
-function showDiv(div_to_show){
+function showDiv(div_to_show, divList){
 	divList.forEach((div)=> div.style.display='none');
 	div_to_show.style.display = 'block';
 }
