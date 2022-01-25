@@ -33,3 +33,13 @@ class ListDetail(generics.RetrieveUpdateDestroyAPIView):
 	# override get_queryset so that only the users list will be retrieved
 	def get_queryset(self):
 		return self.request.user.my_list.all()	
+
+# view to serve the initial html doc for the list app
+@login_required
+def list_app_view(request):
+	content = {
+		'list-api':'list-api',
+		'detail-api':'detail-api'
+	}
+
+	return render(request, 'list/list_app.html', context)
