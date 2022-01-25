@@ -17,9 +17,9 @@ function show(div_to_show){
 // create a table element
 // accepts an array of objects that contains the data
 // returns a table object
-function createTable(raw_data, row_selection_func, table_id, titles){
+function createTable(raw_data, row_selection_func, table_class, titles){
 	let table = document.createElement('TABLE');
-	table.id = table_id;
+	table.className = table_class;
 
 	// get the properties of the data
 	let data_properties = Object.keys(raw_data[0]);

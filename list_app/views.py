@@ -42,4 +42,4 @@ def list_app_view(request):
 		'detail-api':'detail-api'
 	}
 
-	return render(request, 'list/list_app.html', context)
+	return render(request, 'list_app/list_app.html', context)

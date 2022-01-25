@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+	List App
+{% endblock %}
+{% block content %}
+	<div id="create-div">
+		<h1>Create</h1>
+		<input type="text" name="search-bar" id="search-bar" placeholder="search">
+	</div>
+
+	<div id="list-div">
+		<h1>List</h1>
+		<div id="table-div">
+		</div>
+	</div>
+
+	<div id="detail-div">
+		<h1>Detail</h1>
+	</div>
+
+	<div id="update-div">
+		<h1>Update</h1>
+	</div>
+
+	<div id="delete-div">
+		<h1>Delete</h1>
+	</div>
+	{% load static %}
+	<script type="text/javascript" src="{% static 'js/ui.js' %}"></script>
+	<script type="text/javascript">
+		
+	</script>
+{% endblock %}
