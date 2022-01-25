@@ -1,4 +1,4 @@
-function showDiv(div_to_show, divList){
+function showDivBase(div_to_show, divList){
 	divList.forEach((div)=> div.style.display='none');
 	div_to_show.style.display = 'block';
 }

@@ -5,11 +5,11 @@
 {% block content %}
 	<div id="create-update-div">
 		<h1>Create</h1>
-		<input type="text" name="search-bar" id="search-bar" placeholder="search">
 	</div>
 
 	<div id="list-div">
 		<h1>List</h1>
+		<input type="text" name="search-bar" id="search-bar" placeholder="search">
 		<div id="table-div">
 		</div>
 	</div>
@@ -24,7 +24,24 @@
 	{% load static %}
 	<script src="https://cdn.tiny.cloud/1/u9jme0ubzunc1ikuzefidbdc7pnodyglzq5mnqh5tkss5lui/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 	<script type="text/javascript" src="{% static 'js/ui.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/api.js' %}"></script>
 	<script type="text/javascript">
-		
+		const post_domain = '{{list-api}}';
+		const detail_domain = '{{detail-api}}';
+
+		const createUpdateDiv = document.getElementById('create-update-div');
+		const listDiv = document.getElementById('list-div');
+		const detailDiv = document.getElementById('detail-div');
+		const updateDiv = document.getElementById('update-div');
+		const deleteDiv = document.getElementById('delete-div');
+		const tableDiv = document.getElementById('table-div');
+
+		const divList = [createUpdateDiv, listDiv, detailDiv, deleteDiv];
+
+		function showDiv(div_to_show){
+			return showDivBase(div_to_show, divList);
+		}
+
+		showDiv(createUpdateDiv);
 	</script>
 {% endblock %}
