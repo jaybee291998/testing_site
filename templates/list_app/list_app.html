@@ -95,7 +95,7 @@
 		async function postAction(e){
 			console.log(csrf_token);
 			const formData = getFormData();
-			const data = post(formData);
+			const data = await post(formData);
 			console.log(data);
 			clearForm();
 		}
