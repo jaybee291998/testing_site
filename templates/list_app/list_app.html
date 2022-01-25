@@ -92,7 +92,7 @@
 			setFormData('', '');
 		}
 
-		async function postAction(){
+		async function postAction(e){
 			const formData = getFormData();
 			const data = post(formData);
 			console.log(data);
