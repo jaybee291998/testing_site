@@ -17,9 +17,11 @@ from .serializer import ListSerializer
 @method_decorator(login_required, name='dispatch')
 class ListList(generics.ListCreateAPIView):
 	serializer_class = ListSerializer
+
+	# override
 	# override get_queryset so that only the users list will be retrieved
 	def get_queryset(self):
-		return self.request.user.my_list.all()
+		return List.objects.filter(user=request.user)
 
 	# override the perform_create so that the user is saved
 	def perform_create(self, serializer):
