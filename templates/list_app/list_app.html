@@ -47,6 +47,7 @@
 
 		const post_domain = '{{list_api}}';
 		const detail_domain = '{{detail_api}}';
+		const csrf_token = getCookie('csrftoken');
 
 		const createUpdateDiv = document.getElementById('create-update-div');
 		const listDiv = document.getElementById('list-div');
@@ -57,8 +58,47 @@
 
 		const divList = [createUpdateDiv, listDiv, detailDiv, deleteDiv];
 
+		const nameInput = document.getElementById('name');
+
 		function showDiv(div_to_show){
 			return showDivBase(div_to_show, divList);
+		}
+
+		// get the data from the form
+		// return a dictionary that contains the label and value
+		function getFormData(){
+			const data = {
+				name: nameInput.value,
+				content: tinymce.get('content-textarea').getContent();
+			}
+			return data;
+		}
+
+		// set the content of the form
+		function setFormData(name, content){
+			nameInput.value = name;
+			tinymce.get('content-textarea').setContent(content);
+		}
+
+		// just a wrapper that uses the setFormData to clear the form
+		function clearForm(){
+			setFormData('', '');
+		}
+
+		async function postAction(){
+			const formData = getFormData();
+			const data = post(formData);
+			console.log(data);
+			clearForm();
+		}
+
+		// wrapper for post
+		async function post(formData){
+			return await post_update(post_domain, 'POST', formData, csrf_token);
+		}
+
+		async function update(formData, pk){
+			return await post_update(`${detail_domain}/${pk}`, 'PUT', formData, csrf_token);
 		}
 
 		showDiv(createUpdateDiv);
