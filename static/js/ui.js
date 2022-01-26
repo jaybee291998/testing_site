@@ -6,7 +6,12 @@ function showDivBase(div_to_show, divList){
 // create a table element
 // accepts an array of objects that contains the data
 // returns a table object
-function createTable(raw_data, row_selection_func, table_class, titles){
+// raw_data -> an array of objects, each objects must conatain the same propeties
+// properties_to_show -> an array that contains all the properties of the objects to be included in the table
+// row_selection)funct -> a function to be called when a row is clicked
+// table_class -> the html class of the table
+// titles -> sn array that contains the titles of the table, must have the same size as properties_to_show
+function createTable(raw_data, properties_to_show, row_selection_func, table_class, titles){
 	let table = document.createElement('TABLE');
 	table.className = table_class;
 
@@ -23,7 +28,7 @@ function createTable(raw_data, row_selection_func, table_class, titles){
 		let row = table.insertRow(i+1);
 		row.id = i;
 		row.onclick = row_selection_func;
-		data_properties.forEach((data_property, j) => {
+		properties_to_show.forEach((data_property, j) => {
 			let data_property_value = data[data_property];
 			let cell = row.insertCell(j);
 			cell.textContent = data_property_value;
