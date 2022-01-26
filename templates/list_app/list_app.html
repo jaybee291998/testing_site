@@ -130,7 +130,7 @@
 			const res = await del_(raw_data[selected_index]['id']);
 
 			// remove the element from the raw_data
-			delete raw_data[selected_index];
+			raw_data = raw_data.filter(data=>data!=raw_data[selected_index]);
 
 			console.log(raw_data);
 
