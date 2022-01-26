@@ -109,7 +109,7 @@
 		async function displayList(){
 			showDiv(listDiv);
 			const data = await get_data(post_domain);
-			const properties_to_show = ['name', 'date_modified', 'timestamp'];
+			const properties_to_show = ['name', 'last_modified', 'timestamp'];
 			const titles = ['Name', 'Last Modified', 'Date'];
 			const table = createTable(data, properties_to_show, ()=>{}, 'table', titles);
 
