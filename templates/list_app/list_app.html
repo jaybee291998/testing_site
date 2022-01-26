@@ -106,21 +106,23 @@
 			const formData = getFormData();
 			const data = await post(formData);
 			clearForm();
-			displayList();
 
 			// add the new element to the raw data
 			raw_data.push(data);
+
+			displayList();
 		}
 
 		async function updateAction(e){
 			const formData = getFormData();
 			const data = await update(formData, raw_data[selected_index]['id']);
 			clearForm();
-			displayList();
 
 			// update the raw data of the changes
 			raw_data[selected_index]['name'] = formData['name'];
 			raw_data[selected_index]['content'] = formData['content'];
+
+			displayList();
 		}
 
 		async function deleteAction(e){
