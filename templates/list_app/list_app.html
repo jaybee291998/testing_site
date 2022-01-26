@@ -162,6 +162,7 @@
 		function row_selection_function(e){
 			selected_index = e.srcElement.parentNode.id;
 			const selected_data = raw_data[selected_index];
+			console.log(`selected_index: ${selected_index}`);
 			displayDetail(selected_data);
 		}
 		// for display
