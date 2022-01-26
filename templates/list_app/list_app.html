@@ -107,6 +107,10 @@
 			const data = await update(formData, raw_data[selected_index]['id']);
 			clearForm();
 			displayList();
+
+			// update the raw data of the changes
+			raw_data[selected_index]['name'] = formData['name'];
+			raw_data[selected_index]['content'] = formData['content'];
 		}
 
 		// wrapper for post
