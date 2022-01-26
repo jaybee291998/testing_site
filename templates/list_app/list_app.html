@@ -169,7 +169,8 @@
 		async function displayList(){
 			showDiv(listDiv);
 			const data = await get_data(post_domain);
-			console.log(`from server: ${data}`);
+			console.log('from server');
+			console.log(data);
 			const properties_to_show = ['name', 'last_modified', 'timestamp'];
 			const titles = ['Name', 'Last Modified', 'Date'];
 			const table = createTable(data, properties_to_show, row_selection_function, 'table', titles);
