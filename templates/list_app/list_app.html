@@ -13,6 +13,7 @@
 		</textarea>
 		<button id="post-btn">Post</button>
 		<button id="update-btn">Update</button>
+		<button id="delete-btn">Delete</button>
 	</div>
 
 	<div id="list-div">
@@ -47,6 +48,7 @@
 		const detail_domain = '{{detail_api}}';
 
 		let raw_data = null;
+		let selected_index = null;
 
 		const createUpdateDiv = document.getElementById('create-update-div');
 		const listDiv = document.getElementById('list-div');
@@ -62,9 +64,11 @@
 		// buttons 
 		const postBtn = document.getElementById('post-btn');
 		const updateBtn = document.getElementById('update-btn');
+		const deleteBtn = document.getElementById('delete-btn');
 
 		// bind buttons to certain actions
 		postBtn.onclick = postAction;
+		updateBtn.onclick = updateAction;
 
 		function showDiv(div_to_show){
 			return showDivBase(div_to_show, divList);
@@ -95,6 +99,14 @@
 			const formData = getFormData();
 			const data = await post(formData);
 			clearForm();
+			displayList();
+		}
+
+		async function updateAction(e){
+			const formData = getFormData();
+			const data = await update(formData, selected_index);
+			clearForm();
+			displayList();
 		}
 
 		// wrapper for post
@@ -116,7 +128,8 @@
 		}
 
 		function row_selection_function(e){
-			const selected_data = raw_data[e.srcElement.parentNode.id];
+			selected_index = e.srcElement.parentNode.id;
+			const selected_data = raw_data[selected_index];
 			displayDetail(selected_data);
 		}
 		// for display
@@ -138,6 +151,9 @@
 			// since only the editor can display the content
 			showDiv(createUpdateDiv);
 			setFormData(selected_data['name'], selected_data['content']);
+
+			// hide post btn
+			postBtn.style.display = 'none';
 
 		}
 
