@@ -97,6 +97,7 @@
 
 		async function postAction(e){
 			const formData = getFormData();
+			console.log(formData);
 			const data = await post(formData);
 			clearForm();
 			displayList();
