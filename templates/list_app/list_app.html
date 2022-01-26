@@ -51,6 +51,8 @@
 
 		let raw_data = null;
 		let selected_index = null;
+		const properties_to_show = ['name', 'last_modified', 'timestamp'];
+		const titles = ['Name', 'Last Modified', 'Date'];
 
 		const createUpdateDiv = document.getElementById('create-update-div');
 		const listDiv = document.getElementById('list-div');
@@ -109,7 +111,6 @@
 
 			// add the new element to the raw data
 			raw_data.push(data);
-			console.log(raw_data);
 			displayList();
 		}
 
@@ -122,7 +123,6 @@
 			raw_data[selected_index]['name'] = formData['name'];
 			raw_data[selected_index]['content'] = formData['content'];
 
-			console.log(raw_data);
 			displayList();
 		}
 
@@ -130,9 +130,10 @@
 			const res = await del_(raw_data[selected_index]['id']);
 
 			// remove the element from the raw_data
+			// it basically just filter the array that excludes the selecetd item in the array
+			// this is a stop gap solution, since its really inefficient to delete an element of an array
+			// i hope i can implement a better solution than this
 			raw_data = raw_data.filter(data=>data!=raw_data[selected_index]);
-
-			console.log(raw_data);
 
 			displayList();
 		}
@@ -162,18 +163,13 @@
 		function row_selection_function(e){
 			selected_index = e.srcElement.parentNode.id;
 			const selected_data = raw_data[selected_index];
-			console.log(`selected_index: ${selected_index}`);
 			displayDetail(selected_data);
 		}
 		// for display
 		async function displayList(){
 			showDiv(listDiv);
-			const data = await get_data(post_domain);
-			console.log('from server');
-			console.log(data);
-			const properties_to_show = ['name', 'last_modified', 'timestamp'];
-			const titles = ['Name', 'Last Modified', 'Date'];
-			const table = createTable(data, properties_to_show, row_selection_function, 'table', titles);
+			// const data = await get_data(post_domain);
+			const table = createTable(raw_data, properties_to_show, row_selection_function, 'table', titles);
 
 			// display the table
 			tableDiv.innerHTML = '';
