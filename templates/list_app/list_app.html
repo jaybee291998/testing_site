@@ -104,8 +104,7 @@
 
 		async function updateAction(e){
 			const formData = getFormData();
-			console.log(formData);
-			const data = await update(formData, selected_index);
+			const data = await update(formData, raw_data[selected_index]['id']);
 			clearForm();
 			displayList();
 		}
