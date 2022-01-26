@@ -43,11 +43,8 @@
 			tinycomments_mode: 'embedded',
 			tinycomments_author: 'Author name', 
 		});
-
-
 		const post_domain = '{{list_api}}';
 		const detail_domain = '{{detail_api}}';
-		const csrf_token = getCookie('csrftoken');
 
 		const createUpdateDiv = document.getElementById('create-update-div');
 		const listDiv = document.getElementById('list-div');
@@ -93,22 +90,27 @@
 		}
 
 		async function postAction(e){
-			console.log(csrf_token);
 			const formData = getFormData();
 			const data = await post(formData);
-			console.log(data);
 			clearForm();
 		}
 
 		// wrapper for post
 		async function post(formData){
-			return await post_update(post_domain, 'POST', formData, csrf_token);
+			return await post_update(post_domain, 'POST', formData, getCookie('csrftoken'));
 		}
 
 		async function update(formData, pk){
-			return await post_update(`${detail_domain}/${pk}`, 'PUT', formData, csrf_token);
+			return await post_update(`${detail_domain}/${pk}`, 'PUT', formData, getCookie('csrftoken'));
 		}
 
 		showDiv(createUpdateDiv);
+
+
+		// for display
+		async function displayList(){
+			showDiv(listDiv);
+			const data = await get_data(post_domain);
+		}
 	</script>
 {% endblock %}
