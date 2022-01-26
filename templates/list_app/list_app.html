@@ -104,13 +104,21 @@
 			return await post_update(`${detail_domain}/${pk}`, 'PUT', formData, getCookie('csrftoken'));
 		}
 
-		showDiv(createUpdateDiv);
-
 
 		// for display
 		async function displayList(){
 			showDiv(listDiv);
 			const data = await get_data(post_domain);
+			const properties_to_show = ['name', 'date_modified', 'timestamp'];
+			const titles = ['Name', 'Last Modified', 'Date'];
+			const table = createTable(data, properties_to_show, ()=>{}, 'table', titles);
+
+			// display the table
+			tableDiv.innerHTML = '';
+			tableDiv.appendChild(table);
 		}
+
+	// showDiv(createUpdateDiv);
+	displayList();
 	</script>
 {% endblock %}
