@@ -109,7 +109,7 @@
 
 			// add the new element to the raw data
 			raw_data.push(data);
-
+			console.log(raw_data);
 			displayList();
 		}
 
@@ -122,6 +122,7 @@
 			raw_data[selected_index]['name'] = formData['name'];
 			raw_data[selected_index]['content'] = formData['content'];
 
+			console.log(raw_data);
 			displayList();
 		}
 
@@ -130,6 +131,8 @@
 
 			// remove the element from the raw_data
 			delete raw_data[selected_index];
+
+			console.log(raw_data);
 
 			displayList();
 		}
@@ -165,6 +168,7 @@
 		async function displayList(){
 			showDiv(listDiv);
 			const data = await get_data(post_domain);
+			console.log(`from server: ${data}`);
 			const properties_to_show = ['name', 'last_modified', 'timestamp'];
 			const titles = ['Name', 'Last Modified', 'Date'];
 			const table = createTable(data, properties_to_show, row_selection_function, 'table', titles);
