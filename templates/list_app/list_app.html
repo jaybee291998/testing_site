@@ -115,7 +115,7 @@
 		}
 
 		async function update(formData, pk){
-			return await post_update(`${detail_domain}/${pk}`, 'PUT', formData, getCookie('csrftoken'));
+			return await post_update(`${detail_domain}/${pk}/`, 'PUT', formData, getCookie('csrftoken'));
 		}
 
 		// initialize the app
