@@ -51,6 +51,9 @@
 
 		let raw_data = null;
 		let selected_index = null;
+		// back up of raw_data, primarily used when search is used
+		let raw_data_backup = null;
+		let isSearching = false;
 		const properties_to_show = ['name', 'last_modified', 'timestamp'];
 		const titles = ['Name', 'Last Modified', 'Date'];
 
@@ -78,6 +81,11 @@
 		backBtn.onclick = displayList;
 		createBtn.onclick = displayCreate;
 		deleteBtn.onclick = deleteAction;
+
+		const searchBar = document.getElementById('search-bar');
+
+		// event binding
+		searchBar.oninput = searchAction;
 
 		function showDiv(div_to_show){
 			return showDivBase(div_to_show, divList);
@@ -136,6 +144,28 @@
 			raw_data = raw_data.filter(data=>data!=raw_data[selected_index]);
 
 			displayList();
+		}
+
+		function searchAction(e){
+			let searchStr = searchBar.value;
+			backup();
+			if(searchStr.length>0){
+				isSearching = true;
+				raw_data = raw_data.filter((data)=>data['name'].search(searchStr)>=0 || data['content'].search(searchStr)>=0);
+			}else{
+				isSearching = false;
+				// restore the raw_data since searching is done
+			}
+			displayList();
+
+		}
+
+		function backup(){
+			if(!isSearching){
+				raw_data_backup = [...raw_data];
+			}else{
+				data = [...raw_data];
+			}
 		}
 
 		// wrapper for post
