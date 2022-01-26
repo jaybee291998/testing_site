@@ -23,7 +23,7 @@
 	</div>
 
 	<div id="detail-div">
-		<h1>Detail</h1>
+
 	</div>
 
 	<div id="delete-div">
@@ -45,6 +45,8 @@
 		});
 		const post_domain = '{{list_api}}';
 		const detail_domain = '{{detail_api}}';
+
+		let raw_data = null;
 
 		const createUpdateDiv = document.getElementById('create-update-div');
 		const listDiv = document.getElementById('list-div');
@@ -104,21 +106,51 @@
 			return await post_update(`${detail_domain}/${pk}`, 'PUT', formData, getCookie('csrftoken'));
 		}
 
+		// initialize the app
+		async function init(){
+			// get the data and set the raw_data variable
+			raw_data = await get_data(post_domain);
+			// display the list
+			displayList();
 
+		}
+
+		function row_selection_function(e){
+			const selected_data = raw_data[e.srcElement.parentNode.id];
+			displayDetail(selected_data);
+		}
 		// for display
 		async function displayList(){
 			showDiv(listDiv);
 			const data = await get_data(post_domain);
 			const properties_to_show = ['name', 'last_modified', 'timestamp'];
 			const titles = ['Name', 'Last Modified', 'Date'];
-			const table = createTable(data, properties_to_show, (e)=>{console.log(e.srcElement.parentNode.id)}, 'table', titles);
+			const table = createTable(data, properties_to_show, row_selection_function, 'table', titles);
 
 			// display the table
 			tableDiv.innerHTML = '';
 			tableDiv.appendChild(table);
 		}
 
-	// showDiv(createUpdateDiv);
-	displayList();
+		function displayDetail(selected_data){
+			// this should be the detailDiv
+			// but since we are using a wysiwyg it makes send to use it to also display the details
+			// since only the editor can display the content
+			showDiv(createUpdateDiv);
+			setFormData(selected_data['name'], selected_data['content']);
+
+		}
+
+		function createDetailFields(){
+
+		}
+
+		function createDetailField(label, value){
+			const p = document.createElement('P');
+			p.textContent = `${label}: ${value}`;
+			return p;
+		}
+
+		init();
 	</script>
 {% endblock %}
