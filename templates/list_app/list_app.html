@@ -75,6 +75,7 @@
 		updateBtn.onclick = updateAction;
 		backBtn.onclick = displayList;
 		createBtn.onclick = displayCreate;
+		deleteBtn.onclick = deleteAction;
 
 		function showDiv(div_to_show){
 			return showDivBase(div_to_show, divList);
@@ -106,6 +107,9 @@
 			const data = await post(formData);
 			clearForm();
 			displayList();
+
+			// add the new element to the raw data
+			raw_data.push(data);
 		}
 
 		async function updateAction(e){
@@ -119,6 +123,15 @@
 			raw_data[selected_index]['content'] = formData['content'];
 		}
 
+		async function deleteAction(e){
+			del_(raw_data[selected_index]['id']);
+
+			// remove the element from the raw_data
+			delete raw_data[selected_index];
+
+			displayList();
+		}
+
 		// wrapper for post
 		async function post(formData){
 			return await post_update(post_domain, 'POST', formData, getCookie('csrftoken'));
@@ -126,6 +139,10 @@
 
 		async function update(formData, pk){
 			return await post_update(`${detail_domain}/${pk}/`, 'PUT', formData, getCookie('csrftoken'));
+		}
+
+		async function del_(pk){
+			return await del(`${detail_domain}/${pk}/`, getCookie('csrftoken'));
 		}
 
 		// initialize the app
