@@ -151,7 +151,8 @@
 				raw_data_backup[indices[selected_index]]['name'] = formData['name'];
 				raw_data_backup[indices[selected_index]]['content'] = formData['content'];
 				// reflect the changes from the backup to raw_data
-				backup();
+				// basically perform another query
+				searchAction();
 			}else{
 				// update the raw data of the changes
 				raw_data[selected_index]['name'] = formData['name'];
