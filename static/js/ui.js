@@ -15,7 +15,7 @@ function createTable(raw_data, properties_to_show, row_selection_func, table_cla
 	if(raw_data.length==0) throw 'raw_data is empty';
 	if(properties_to_show.length != titles.length) throw 'properties_to_show and titles has mismatching length' ;
 	properties_to_show.forEach((property)=>{
-		if(!raw_data.hasOwnProperty(property)) throw `${property} is not a property of the raw_data`;
+		if(!raw_data[0].hasOwnProperty(property)) throw `${property} is not a property of the raw_data`;
 	})
 	let table = document.createElement('TABLE');
 	table.className = table_class;
