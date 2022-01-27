@@ -150,7 +150,7 @@
 				// to the correct index in the backup
 				raw_data_backup[indices[selected_index]]['name'] = formData['name'];
 				raw_data_backup[indices[selected_index]]['content'] = formData['content'];
-				raw_data_backup[indices[selected_index]]['last_modified']=data['last_modified'];
+				raw_data_backup[indices[selected_index]]['last_modified']=processDateStr(data['last_modified']);
 				// reflect the changes from the backup to raw_data
 				// basically perform another query
 				searchAction();
