@@ -165,8 +165,9 @@
 				isSearching = true;
 				indices = [];
 				raw_data = raw_data.filter((data, i)=>{
-					indices.push(i);
-					return data['name'].search(searchStr)>=0 || data['content'].search(searchStr)>=0
+					let value = data['name'].search(searchStr)>=0 || data['content'].search(searchStr)>=0;
+					if(value) indices.push(i);
+					return value;
 				});
 				console.log(indices);
 			}else{
