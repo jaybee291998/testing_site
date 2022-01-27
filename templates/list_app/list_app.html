@@ -158,7 +158,7 @@
 				// update the raw data of the changes
 				raw_data[selected_index]['name'] = formData['name'];
 				raw_data[selected_index]['content'] = formData['content'];
-				raw_data[selected_index]['last_modified']=data['last_modified'];
+				raw_data[selected_index]['last_modified']=processDateStr(data['last_modified']);
 			}
 
 			displayList();
