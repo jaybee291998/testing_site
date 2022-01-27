@@ -117,8 +117,16 @@
 			const data = await post(formData);
 			clearForm();
 
-			// add the new element to the raw data
-			raw_data.push(data);
+			// if is searching, instead of manipulating raw_data
+			// which in this is a temporary, we should modify the raw_data_backup instead
+			// since each time you query raw_data will be reinstantiated to the backup,
+			// so any changes to the backup will be reflected to the raw_data
+			if(isSearching){
+				raw_data_backup.push(data);
+			}else{
+				// add the new element to the raw data
+				raw_data.push(data);
+			}
 			displayList();
 		}
 
@@ -162,8 +170,10 @@
 
 		function backup(){
 			if(!isSearching){
+				// at the start of the search, backup the raw_data
 				raw_data_backup = [...raw_data];
 			}else{
+				// each search query, reinstantiate the raw_data
 				raw_data = [...raw_data_backup];
 			}
 		}
