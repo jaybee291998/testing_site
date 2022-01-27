@@ -165,11 +165,27 @@
 		async function deleteAction(e){
 			const res = await del_(raw_data[selected_index]['id']);
 
-			// remove the element from the raw_data
-			// it basically just filter the array that excludes the selecetd item in the array
-			// this is a stop gap solution, since its really inefficient to delete an element of an array
-			// i hope i can implement a better solution than this
-			raw_data = raw_data.filter(data=>data!=raw_data[selected_index]);
+			// if is searching, instead of manipulating raw_data
+			// which in this is a temporary, we should modify the raw_data_backup instead
+			// since each time you query raw_data will be reinstantiated to the backup,
+			// so any changes to the backup will be reflected to the raw_data
+			if(isSearching){
+				// update the backup of the changes
+				// since the selected index currently corresponds to raw_data
+				// we will use the indices that converts the corressponding index
+				// to the correct index in the backup
+				raw_data_backup = raw_data_backup.filter(data=>data!=raw_data_backup[indices[selected_index]]);
+				// reflect the changes from the backup to raw_data
+				// basically perform another query
+				searchAction();
+			}else{
+				// remove the element from the raw_data
+				// it basically just filter the array that excludes the selecetd item in the array
+				// this is a stop gap solution, since its really inefficient to delete an element of an array
+				// i hope i can implement a better solution than this
+				raw_data = raw_data.filter(data=>data!=raw_data[selected_index]);
+			}
+
 
 			displayList();
 		}
