@@ -237,6 +237,12 @@
 		async function init(){
 			// get the data and set the raw_data variable
 			raw_data = await get_data(post_domain);
+			// convert the dates into a more readable format
+			raw_data = raw_data.map((data)=>{
+				data['timestamp'] = processDateStr(data['timestamp']);
+				data['last_modified'] = processDateStr(data['last_modified']);
+				return data;
+			});
 			// display the list
 			displayList();
 
