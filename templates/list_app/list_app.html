@@ -139,9 +139,24 @@
 			const data = await update(formData, raw_data[selected_index]['id']);
 			clearForm();
 
-			// update the raw data of the changes
-			raw_data[selected_index]['name'] = formData['name'];
-			raw_data[selected_index]['content'] = formData['content'];
+			// if is searching, instead of manipulating raw_data
+			// which in this is a temporary, we should modify the raw_data_backup instead
+			// since each time you query raw_data will be reinstantiated to the backup,
+			// so any changes to the backup will be reflected to the raw_data
+			if(isSearching){
+				// update the backup of the changes
+				// since the selected index currently corresponds to raw_data
+				// we will use the indices that converts the corressponding index
+				// to the correct index in the backup
+				raw_data_backup[indices[selected_index]]['name'] = formData['name'];
+				raw_data_backup[indices[selected_index]]['content'] = formData['content'];
+				// reflect the changes from the backup to raw_data
+				backup();
+			}else{
+				// update the raw data of the changes
+				raw_data[selected_index]['name'] = formData['name'];
+				raw_data[selected_index]['content'] = formData['content'];
+			}
 
 			displayList();
 		}
@@ -166,10 +181,10 @@
 				indices = [];
 				raw_data = raw_data.filter((data, i)=>{
 					let value = data['name'].search(searchStr)>=0 || data['content'].search(searchStr)>=0;
+					// if an element pass the requirement add the index to the indices
 					if(value) indices.push(i);
 					return value;
 				});
-				console.log(indices);
 			}else{
 				isSearching = false;
 				// restore the raw_data since searching is done
