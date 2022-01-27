@@ -250,7 +250,7 @@
 		// for display
 		async function displayList(){
 			showDiv(listDiv);
-			let table = null;
+			let table = document.createElement('table');
 			// const data = await get_data(post_domain);
 			try{
 				table = createTable(raw_data, properties_to_show, row_selection_function, 'table', titles);
