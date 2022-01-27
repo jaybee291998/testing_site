@@ -250,9 +250,14 @@
 		// for display
 		async function displayList(){
 			showDiv(listDiv);
+			let table = null;
 			// const data = await get_data(post_domain);
-			const table = createTable(raw_data, properties_to_show, row_selection_function, 'table', titles);
-
+			try{
+				table = createTable(raw_data, properties_to_show, row_selection_function, 'table', titles);
+			}catch(e){
+				console.log(e)
+			}
+			
 			// display the table
 			tableDiv.innerHTML = '';
 			tableDiv.appendChild(table);
