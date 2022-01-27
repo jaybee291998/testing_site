@@ -195,9 +195,10 @@
 			backup();
 			if(searchStr.length>0){
 				isSearching = true;
+				let searchEx = `/${searchStr}`
 				indices = [];
 				raw_data = raw_data.filter((data, i)=>{
-					let value = data['name'].search(searchStr)>=0 || data['content'].search(searchStr)>=0;
+					let value = data['name'].search(searchEx)>=0 || data['content'].search(searchEx)>=0;
 					// if an element pass the requirement add the index to the indices
 					if(value) indices.push(i);
 					return value;
