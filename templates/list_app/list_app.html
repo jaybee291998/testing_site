@@ -123,12 +123,6 @@
 
 			// update the state based on wether were on searching mode
 			updateStateBasedOnSearching(isSearching, ()=>updateStateOnPost(raw_data_backup, data), ()=>updateStateOnPost(raw_data, data));
-			// if(isSearching){
-			// 	updateStateOnPost(raw_data_backup, data);
-			// }else{
-			// 	// add the new element to the raw data
-			// 	updateStateOnPost(raw_data, data);
-			// }
 			displayList();
 		}
 
@@ -156,20 +150,11 @@
 			const data = await update(formData, raw_data[selected_index]['id']);
 			clearForm();
 
-			if(isSearching){
-				// update the backup of the changes
-				// since the selected index currently corresponds to raw_data
-				// we will use the indices that converts the corressponding index
-				// to the correct index in the backup
-				updateStateOnUpdate(raw_data_backup, data, indices[selected_index]);
-				// reflect the changes from the backup to raw_data
-				// basically perform another query
-				searchAction();
-			}else{
-				// update the raw data of the changes
-				updateStateOnUpdate(raw_data, data, selected_index);
-			}
-
+			// update the backup of the changes
+			// since the selected index currently corresponds to raw_data
+			// we will use the indices that converts the corressponding index
+			// to the correct index in the backup
+			updateStateBasedOnSearching(isSearching, ()=>updateStateOnUpdate(raw_data_backup, data, indices[selected_index]), ()=>updateStateOnPost(raw_data, data, selected_index));
 			displayList();
 		}
 
@@ -182,15 +167,8 @@
 		}
 		async function deleteAction(e){
 			const res = await del_(raw_data[selected_index]['id']);
-
-			if(isSearching){
-				updateStateOnDelete(raw_data_backup, indices[selected_index]);
-				// reflect the changes from the backup to raw_data
-				// basically perform another query
-				searchAction();
-			}else{
-				updateStateOnDelete(raw_data, selected_index);
-			}
+			
+			updateStateBasedOnSearching(isSearching, ()=>updateStateOnDelete(raw_data_backup, indices[selected_index]), ()=>updateStateOnDelete(raw_data, selected_index));
 			displayList();
 		}
 
