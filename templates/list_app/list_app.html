@@ -12,6 +12,8 @@
 			hi
 		</textarea>
 		<button id="post-btn">Post</button>
+		<button id="update-btn">Update</button>
+		<button id="delete-btn">Delete</button>
 		<button id="back-btn">Back</button>
 	</div>
 
@@ -24,12 +26,7 @@
 	</div>
 
 	<div id="detail-div">
-		<div id="detail-fields">
-			
-		</div>
-		<button id="update-btn">Update</button>
-		<button id="delete-btn">Delete</button>
-		<button id="detail-back-btn">Back</button>
+
 	</div>
 
 	<div id="delete-div">
@@ -70,7 +67,6 @@
 		const updateDiv = document.getElementById('update-div');
 		const deleteDiv = document.getElementById('delete-div');
 		const tableDiv = document.getElementById('table-div');
-		const detailFields = document.getElementById('detail-fields');
 
 		const divList = [createUpdateDiv, listDiv, detailDiv, deleteDiv];
 
@@ -82,7 +78,6 @@
 		const deleteBtn = document.getElementById('delete-btn');
 		const backBtn = document.getElementById('back-btn');
 		const createBtn = document.getElementById('create-btn');
-		const detailBackBtn = document.getElementById('detail-back-btn');
 
 		// bind buttons to certain actions
 		postBtn.onclick = postAction;
@@ -90,7 +85,6 @@
 		backBtn.onclick = displayList;
 		createBtn.onclick = displayCreate;
 		deleteBtn.onclick = deleteAction;
-		detailBackBtn.onclick = displayList;
 
 		const searchBar = document.getElementById('search-bar');
 
@@ -278,19 +272,34 @@
 		}
 
 		function displayDetail(selected_data){
-			showDiv(detailDiv);
-			detailFields.innerHTML = '';
-			['name', 'last_modified', 'timestamp'].forEach((field)=>{
-				detailFields.appendChild(createDetailField(field, selected_data[field]));
-			});
-			let contentP = document.createElement('P');
-			contentP.innerHTML = selected_data['content'];
-			detailFields.appendChild(contentP);
+			// this should be the detailDiv
+			// but since we are using a wysiwyg it makes send to use it to also display the details
+			// since only the editor can display the content
+			showDiv(createUpdateDiv);
+			setFormData(selected_data['name'], selected_data['content']);
+
+			// display necessary buttons
+			updateBtn.style.display = 'block';
+			deleteBtn.style.display = 'block';
+			backBtn.style.display = 'block';
+
+			// hide post btn
+			postBtn.style.display = 'none';
+
 		}
 
 		function displayCreate(){
 			showDiv(createUpdateDiv);
 			clearForm();
+
+			// show necessary buttons
+			postBtn.style.display = 'block';
+			backBtn.style.display = 'block';
+
+			// hide unnecessary buttons
+			updateBtn.style.display = 'none';
+			deleteBtn.style.display = 'none';
+
 		}
 
 		function createDetailFields(){
