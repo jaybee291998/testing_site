@@ -154,7 +154,7 @@
 			// since the selected index currently corresponds to raw_data
 			// we will use the indices that converts the corressponding index
 			// to the correct index in the backup
-			updateStateBasedOnSearching(isSearching, ()=>updateStateOnUpdate(raw_data_backup, data, indices[selected_index]), ()=>updateStateOnPost(raw_data, data, selected_index));
+			updateStateBasedOnSearching(isSearching, ()=>updateStateOnUpdate(raw_data_backup, data, indices[selected_index]), ()=>updateStateOnUpdate(raw_data, data, selected_index));
 			displayList();
 		}
 
