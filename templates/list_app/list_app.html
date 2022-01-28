@@ -279,10 +279,13 @@
 
 		function displayDetail(selected_data){
 			showDiv(detailDiv);
-			Object.keys(selected_data).forEach((field)=>{
-				detailFields.appendChild(createDetailField(field, raw_data[field]));
+			detailFields.innerHTML = '';
+			['name', 'last_modified', 'timestamp'].forEach((field)=>{
+				detailFields.appendChild(createDetailField(field, selected_data[field]));
 			});
-
+			let contentP = document.createElement('P');
+			contentP.innerHTML = selected_data['content'];
+			detailFields.appendChild(contentP);
 		}
 
 		function displayCreate(){
