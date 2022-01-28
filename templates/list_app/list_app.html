@@ -173,11 +173,8 @@
 		}
 
 		function updateStateOnDelete(state, index){
-			// remove the element from the raw_data
-			// it basically just filter the array that excludes the selecetd item in the array
-			// this is a stop gap solution, since its really inefficient to delete an element of an array
-			// i hope i can implement a better solution than this
-			state = state.filter(data=>data!=state[index]);
+			// remove the element on the index from the state
+			state.splice(index, 1);
 		}
 
 		function searchAction(e){
