@@ -121,24 +121,26 @@
 			const data = await post(formData);
 			clearForm();
 
-			// if is searching, instead of manipulating raw_data
-			// which in this is a temporary, we should modify the raw_data_backup instead
-			// since each time you query raw_data will be reinstantiated to the backup,
-			// so any changes to the backup will be reflected to the raw_data
-			if(isSearching){
-				updateStateOnPost(raw_data_backup, data);
-			}else{
-				// add the new element to the raw data
-				updateStateOnPost(raw_data, data);
-			}
+			// update the state based on wether were on searching mode
+			updateStateBasedOnSearching(isSearching, ()=>updateStateOnPost(raw_data_backup, data), ()=>updateStateOnPost(raw_data, data));
+			// if(isSearching){
+			// 	updateStateOnPost(raw_data_backup, data);
+			// }else{
+			// 	// add the new element to the raw data
+			// 	updateStateOnPost(raw_data, data);
+			// }
 			displayList();
 		}
 
 		function updateStateBasedOnSearching(isSearchingFlag, stateUpdateFuncSearching, stateUpdateFuncNotSeaching){
+			// if is searching, instead of manipulating raw_data
+			// which in this is a temporary, we should modify the raw_data_backup instead
+			// since each time you query raw_data will be reinstantiated to the backup,
+			// so any changes to the backup will be reflected to the raw_data
 			if(isSearchingFlag){
 				stateUpdateFuncSearching();
 			}else{
-				
+				stateUpdateFuncNotSeaching();
 			}
 		}
 
