@@ -24,9 +24,12 @@
 	</div>
 
 	<div id="detail-div">
+		<div id="detail-fields">
+			
+		</div>
 		<button id="update-btn">Update</button>
 		<button id="delete-btn">Delete</button>
-		<button id="detail-back-btn"></button>
+		<button id="detail-back-btn">Back</button>
 	</div>
 
 	<div id="delete-div">
@@ -67,6 +70,7 @@
 		const updateDiv = document.getElementById('update-div');
 		const deleteDiv = document.getElementById('delete-div');
 		const tableDiv = document.getElementById('table-div');
+		const detailsFields = document.getElementById('detail-fields');
 
 		const divList = [createUpdateDiv, listDiv, detailDiv, deleteDiv];
 
@@ -276,7 +280,7 @@
 		function displayDetail(selected_data){
 			showDiv(detailDiv);
 			Object.keys(selected_data).forEach((field)=>{
-				createDetailField(field, raw_data[field]);
+				detailFields.appendChild(createDetailField(field, raw_data[field]));
 			});
 
 		}
