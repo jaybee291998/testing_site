@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     'account',
     'list_app',
+    'api',
 
     'rest_framework',
 ]
