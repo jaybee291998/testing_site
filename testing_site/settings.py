@@ -147,12 +147,14 @@ SESSION_COOKIE_HTTPONLY = True
 
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8080',
-    'http://127.0.0.1:8080'
+    'http://127.0.0.1:8080',
+    'https://heuristic-jang-ed96a5.netlify.app/'
 ]
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:8080',
-    'http://127.0.0.1:8080'
+    'http://127.0.0.1:8080',
+    'https://heuristic-jang-ed96a5.netlify.app/'
 ]
 CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
 CORS_ALLOW_CREDENTIALS = True
