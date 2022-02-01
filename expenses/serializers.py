@@ -7,5 +7,6 @@ class ExpenseSerializer(serializers.ModelSerializer):
 		fields = ['id', 'description', 'category', 'price', 'timestamp', 'fund', 'account']
 
 class ExpenseTypeSerializer(serializers.ModelSerializer):
-	model = ExpenseType
-	fields = ['id', 'name', 'description', 'account']
+	class Meta:
+		model = ExpenseType
+		fields = ['id', 'name', 'description', 'account']
