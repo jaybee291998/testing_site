@@ -30,7 +30,7 @@ from .permissions import OwnerAndSuperUserOnly
 from accounts.utils import is_object_expired
 from .forms import DateSelectorForm
 
-from .serializers import ExpenseSerializer, ExpenseSerializer
+from .serializers import ExpenseSerializer, ExpenseTypeSerializer
 
 # Create your views here.
 @method_decorator(login_required, name='dispatch')
