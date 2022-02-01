@@ -19,8 +19,7 @@ from rest_framework.parsers import JSONParser
 from rest_framework.response import Response 
 from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
-from rest_framework import status
-from rest_framework import generics
+from rest_framework import status, generics, permissions
 
 from .forms import ExpenseAddForm
 from .models import Expense, Fund, ExpenseType
@@ -31,7 +30,7 @@ from .permissions import OwnerAndSuperUserOnly
 from accounts.utils import is_object_expired
 from .forms import DateSelectorForm
 
-from .serializers import ExpenseSerializer
+from .serializers import ExpenseSerializer, ExpenseSerializer
 
 # Create your views here.
 @method_decorator(login_required, name='dispatch')
@@ -460,4 +459,11 @@ def get_stats_view(request):
 		'form': DateSelectorForm()
 	}
 	return render(request, 'expenses/get_stats_view.html', context)
+
+@method_decorator(login_required, name='dispatch')
+class ExpenseTypeList(generics.ListCreateAPIView):
+	serializer_class = ExpenseTypeSerializer
+
+	def get_queryset(self):
+		return self.request.user.bank_account.account_expense_type.all()
 
