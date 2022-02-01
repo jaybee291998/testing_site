@@ -44,6 +44,10 @@ INSTALLED_APPS = [
     'account',
     'list_app',
     'api',
+    'bank_account',
+    'expenses',
+    'fund',
+    'income',
 
     'rest_framework',
     'corsheaders',
