@@ -20,5 +20,5 @@ urlpatterns = [
     path('get_stats/', views.get_stats, name='get_stats'),
     path('get_stats_view/', views.get_stats_view, name='get_stats_view'),
 
-    path('expense-type-list-api', views.ExpenseTypeList.as_view(), name='expense-type-list-api'),
+    path('expense-type-list-api/', views.ExpenseTypeList.as_view(), name='expense-type-list-api'),
 ]
