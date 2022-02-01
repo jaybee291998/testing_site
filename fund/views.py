@@ -5,6 +5,10 @@ from django.shortcuts import render, redirect
 from django.http import Http404, HttpResponse, JsonResponse
 from django.urls import reverse_lazy
 
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import status, generics, permissions
+
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 
@@ -18,6 +22,7 @@ from django.conf import settings
 
 from .models import Fund, FundTransferHistory
 from .forms import FundAllocationForm, FundTransferForm
+from .serializers import FundSerializer
 
 from expenses.forms import DateSelectorForm
 from accounts.utils import is_object_expired
@@ -244,3 +249,12 @@ def transfer_FTF(request, fund_id, *args, **kwargs):
 	}
 
 	return render(request, 'fund/fund_transfer.html', context)
+
+
+@method_decorator(login_required, name='dispatch')
+class FundList(generics.ListCreateAPIView):
+	serializer_class = FundSerializer
+
+	def get_queryset(self):
+		return self.request.user.account_funds.all()
+
