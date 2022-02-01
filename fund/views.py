@@ -256,5 +256,5 @@ class FundList(generics.ListCreateAPIView):
 	serializer_class = FundSerializer
 
 	def get_queryset(self):
-		return self.request.user.account_funds.all()
+		return self.request.user.bank_account.account_funds.all()
 
