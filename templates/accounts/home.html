@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %}
+	Home
+{% endblock %}
+{% block content %}
+<a href="{{logout_link}}" class="btn btn-danger" role='button'>logout</a>
+<div class="flex-container">
+	<div class="card flex-item">
+	  <div class="card-body">
+	    <h5 class="card-title">Expense</h5>
+	    <h6 class="card-subtitle mb-2 text-muted">app</h6>
+	    <p class="card-text">records and analyze your daily expenditures</p>
+	    <a href="{{expense_home_link}}" class="card-link">Go to Expense</a>
+	  </div>
+	</div>
+	<div class="card flex-item">
+	  <div class="card-body">
+	    <h5 class="card-title">Income</h5>
+	    <h6 class="card-subtitle mb-2 text-muted">app</h6>
+	    <p class="card-text">records and analyze your income</p>
+	    <a href="{{income_home_link}}" class="card-link">Go to Income</a>
+	  </div>
+	</div>
+
+	<div class="card flex-item">
+	  <div class="card-body">
+	    <h5 class="card-title">Diary</h5>
+	    <h6 class="card-subtitle mb-2 text-muted">app</h6>
+	    <p class="card-text">record what happnens in your daily life</p>
+	    <a href="{{diary_home_link}}" class="card-link">Go to Diary</a>
+	  </div>
+	</div>
+
+	<div class="card flex-item">
+	  <div class="card-body">
+	    <h5 class="card-title">Fund</h5>
+	    <h6 class="card-subtitle mb-2 text-muted">app</h6>
+	    <p class="card-text">allocate and monitor yours funds</p>
+	    <a href="{{fund_home_link}}" class="card-link">Go to Fund</a>
+	  </div>
+	</div>
+
+	<div class="card flex-item">
+	  <div class="card-body">
+	    <h5 class="card-title">List</h5>
+	    <h6 class="card-subtitle mb-2 text-muted">app</h6>
+	    <p class="card-text">an app that allows you to make list of stuff<br>
+	    like grocery list, to do list, and many more types of list</p>
+	    <a href="{{list_home_link}}" class="card-link">Go to List</a>
+	  </div>
+	</div>
+
+	<div class="card flex-item">
+	  <div class="card-body">
+	    <h5 class="card-title">Expense Type</h5>
+	    <h6 class="card-subtitle mb-2 text-muted">app</h6>
+	    <p class="card-text">add expense types for your expenses</p>
+	    <a href="{{expense_type_link}}" class="card-link">Go to ExpenseType</a>
+	  </div>
+	</div>
+
+	<div class="card flex-item">
+	  <div class="card-body">
+	    <h5 class="card-title">Income Type</h5>
+	    <h6 class="card-subtitle mb-2 text-muted">app</h6>
+	    <p class="card-text">add income types for your expenses</p>
+	    <a href="{{income_type_link}}" class="card-link">Go to IncomeType</a>
+	  </div>
+	</div>
+</div>
+
+{% endblock %}

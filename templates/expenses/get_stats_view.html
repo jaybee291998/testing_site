@@ -1,0 +1,366 @@
+{% extends 'base.html' %}
+{% block title %}
+	Expense | Statistics
+{% endblock %}
+{% block content %}
+	<h3>Hard Wood Laminate</h3>
+	    <label for="interval">Interval:</label>
+	    <select id="interval" onchange="get_data(this)">
+	    	<option value="WEEK">Week</option>
+	    	<option value="MONTH">Month</option>
+	    	<option value="THREEMONTHS">3 Months</option>
+	    </select>
+	    <label></label>
+	    <select id="chart-type">
+	    	<option value="bar">Bar</option>
+	    	<option value="line">Line</option>
+	    	<option value="radar">Radar</option>
+	    	<option value="pie">Pie</option>
+	    	<option value="doughnut">Doughnut</option>
+	    	<option value="polarArea">Polar Area</option>
+	    </select>
+	<div id="button-div">
+<!-- 	    <input type="radio" id="expense-chart" name="chart-type" value="expense-chart">Expense Chart<br>
+	    <input type="radio" id="fund-chart" name="chart-type" value="fund-chart">Fund Chart<br>
+	    <input type="radio" id="category-chart" name="chart-type" value="category-chart">Category Chart<br> -->
+	</div>
+	<div id="control-div">
+	</div>
+	<div id="canvas_div_id">
+	</div>
+	<div id="table-div">
+	</div>	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js" integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+	<script type="text/javascript">
+		// the expense data from the selected interval
+		let raw_expense_data = [];
+		let filteredData = [];
+		let fund_names = {};
+		let category_names = {};
+		const months = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+		// get the data from the server
+		const get_data = async () => {
+			const res = await fetch('{{domain}}?interval='+interval.value);
+			const data = await res.json();
+			// set the variable
+			raw_expense_data = data["expense_data"];
+			fund_names = data["fund_names"];
+			category_names = data["category_names"];
+			// generate the controls
+			createControls()
+			return data
+		}
+
+		const createControls = () => {
+			// remove all the elements on the control div
+			controlDiv.innerHTML = '';
+			// create the radio buttons
+			createRadioControl("chart-type", "expense-chart", "expense-chart", "Expense Chart ", updateChart);
+			createRadioControl("chart-type", "fund-chart", "fund-chart", "Fund Chart ", updateChart);
+			createRadioControl("chart-type", "category-chart", "category-chart", "Category Chart ", updateChart);
+
+
+			createSelectControl(fund_names, 'fund', 'fund-control', updateChartAndTable);
+			createSelectControl(category_names, 'category', 'category-control', updateChartAndTable);
+			// create a selector for dates
+			let dict = {}
+			raw_expense_data.map((expense_data) => expense_data.timestamp.slice(0,10)).forEach((date) => dict[date]=convertDate(date.slice(5,10)))
+			createSelectControl(dict, 'start-date', 'start-date-control', updateChartAndTable);
+			createSelectControl(dict, 'end-date', 'end-date-control', updateChartAndTable);
+		}
+
+		// filter expenses bases on selected controls
+		const filterData = () => {
+			// data processing section
+			let fund_select = document.getElementById('fund-control');
+			let category_select = document.getElementById('category-control');
+			let start_date_select = document.getElementById('start-date-control');
+			let end_date_select = document.getElementById('end-date-control');
+			let expenses = raw_expense_data;
+			// if the fund selected is not all
+			// fiter the data to the selected fund
+			if(fund_select.value != -1) expenses = expenses.filter((expense) => expense['fund'] == fund_select.value );
+			// if category is not all
+			// filter the data based on the value of category
+			if(category_select.value != -1) expenses = expenses.filter((expense) => expense['category'] == category_select.value);
+			if(start_date_select.value != -1 && end_date_select.value != -1){
+				if(start_date_select.value < end_date_select.value){
+					expenses = expenses.filter((expense) => (start_date_select.value <= expense.timestamp.slice(0,10) && expense.timestamp.slice(0,10) <= end_date_select.value));
+					console.log(expenses);
+				}
+			}		
+			return expenses;
+		}
+
+		// update the table and chart based on the selected parameters
+		const updateChartAndTable = () => {
+			filteredData = filterData();
+			updateChart();
+			createTable();
+		} 
+
+		// update chart based on the selected radio controls
+		const updateChart = () => {
+			let getSelectedValue = document.querySelector('input[name="chart-type"]:checked');
+			if(getSelectedValue!=null){
+				let selectedValue = getSelectedValue.value;
+				if(selectedValue=='expense-chart') make_expense_chart();
+				else if(selectedValue=='fund-chart') make_fund_chart();
+				else if(selectedValue=='category-chart') make_category_chart();
+				else console.log("RAdio buttons are fucked");
+			}
+		}
+
+
+
+		// create a table base on fund and category
+		const createTable = () => {
+			let expenses = filteredData;
+			// table to tabulate all of the expense data
+			let table = document.createElement("TABLE");
+			table.className = "table";
+			// loop thriugh all the expense data
+			// and create a row for each expense entry
+			expenses.forEach((expense, i) => {
+				// insert a row on table for each expense entry
+				let row = table.insertRow(i);
+				// the properties of the expense such as desctription, price, ...etc
+				let expense_properties = Object.keys(expense);
+				expense_properties.forEach((expense_property, j) => {
+					// the value of the expense property i.e. description="pambili ng ulam"
+					let expense_property_value = expense[expense_property];
+					// add the cells that contain the properties of the expenses
+					let cell = row.insertCell(j);
+					if(expense_property == 'fund'){
+						cell.textContent = fund_names[expense_property_value];
+					}else if(expense_property == 'category'){
+						cell.textContent = category_names[expense_property_value];
+					}else if(expense_property == 'timestamp'){
+						cell.textContent = convertDate(expense_property_value.slice(5,10));
+					}else{
+						cell.textContent = expense_property_value
+					}
+				});
+			});
+
+			// parahrapg to display the total expenses
+			let total_expense_p = document.createElement("P");
+			total_expense_p.innerHTML = "<br>Total</br>: " + expenses.reduce((sum ,data) => sum + data.price, 0);
+			// empty the div first before adding the new table
+			tableDiv.innerHTML = '';
+			tableDiv.appendChild(table);
+			tableDiv.appendChild(total_expense_p);
+
+		}
+
+		// create radio button controls
+		const createRadioControl = (name, id, value, inner, func) => {
+			let radio = document.createElement("INPUT");
+			radio.setAttribute("type", "radio");
+			radio.id = id;
+			radio.name = name;
+			radio.value = value;
+			radio.onclick = func;
+			let label = document.createElement("LABEL");
+			label.htmlFor = radio.id;
+			label.innerHTML = inner;
+
+			buttonDiv.appendChild(label);
+			buttonDiv.appendChild(radio);
+			buttonDiv.appendChild(document.createElement("BR"));
+		}
+
+		// create options for a select
+		const createSelectControl = (key_value_dict, label_name, id, func) => {
+			let select_object = document.createElement("SELECT");
+			select_object.id = id;
+			select_object.onchange = func
+			let label = document.createElement("LABEL");
+			label.htmlFor = select_object.id;
+			label.innerHTML = label_name;
+
+			// add an option to select all
+			let all_option = document.createElement("OPTION");
+			all_option.text = "ALL";
+			all_option.value = -1;
+			// add the option to the select object
+			select_object.add(all_option);
+			// generate options
+			let keys = Object.keys(key_value_dict);
+			keys.forEach((key) => {
+				let new_option = document.createElement("OPTION");
+				new_option.text = key_value_dict[key];
+				new_option.value = key;
+				// add the option to the select object
+				select_object.add(new_option);
+			});
+
+			// add the select object and label to control div
+			controlDiv.appendChild(label);
+			controlDiv.appendChild(select_object);
+		}
+
+		// make a expense chart
+		const make_expense_chart = async() =>{
+			let expense_data = filteredData;
+			var chart_data = process_chart_data(expense_data.map((data) => data.price), expense_data.map((data) => data.timestamp.slice(5, 10)));
+			make_chart(chart_data, "expenses");
+		}
+
+		// make a chart for fund and category
+		const make_fund_chart = () => {
+			let expense_data = filteredData;
+			let fund = expense_data.map((expense) => expense.fund);
+			let price = expense_data.map((expense) => expense.price)
+			let chart_data = findAllIndices(fund, price);
+			chart_data["labels"] = chart_data["labels"].map((label) => fund_names[label]);
+			make_chart(chart_data, "Total Expenses per Fund");
+		}
+
+		// make a chart for fund and category
+		const make_category_chart = () => {
+			let expense_data = filteredData;
+			let category = expense_data.map((expense) => expense.category);
+			let price = expense_data.map((expense) => expense.price)
+			let chart_data = findAllIndices(category, price);
+			chart_data["labels"] = chart_data["labels"].map((label) => category_names[label]);
+			make_chart(chart_data, "Total Expenses per Category");
+		}
+
+		// make a chart
+		const make_chart = (chart_data, label) => {
+			// create a new canvas inside the canvas div
+			canvasDiv.innerHTML = '';
+			const ctx = document.createElement('canvas');
+			ctx.id = 'myChart';
+			
+			// create the dataset that will be used by the chart
+			dataset = {
+				label: label,
+				data: chart_data.data,
+				backgroundColor: getRandomColors(chart_data.data.length),
+				borderWidth: 1
+			}
+
+			// the actual chart object
+			var myChart = new Chart(ctx,{
+				type: chartType.value,
+				data: {
+					labels: chart_data.labels,
+					datasets: [dataset]
+				},
+				options:{
+					scales:{
+						y:{
+							beginAtZero:true
+						}
+					}
+				}
+			});
+
+			canvasDiv.appendChild(ctx);
+
+		}
+		// helper functions 
+
+		// count the consecutive occurence of an element in given index on a given array
+		// ex. arr = [1,2,3,3,3,4,4,5,5,9,9,9]
+		// count_consec_occur(arr, 2, 3) = 3
+		// counts the number of times 3 appears on the array on the index 2
+		const count_consec_occur = (array, start_index, element) => {
+			var occurence_count = 0;
+			for(let i = start_index; i < array.length; i++){
+				var cur_val = array[i];
+				if(cur_val == element){ occurence_count++ }
+				else{ break; }
+			}
+			return occurence_count;
+		}
+		// compute the sum of all the elements of the array
+		// from start index to the end index(exclusive)
+		const sum_fr_to = (array, start_index, end_index) => {
+			sum = 0;
+			for(let i = start_index; i < end_index; i++){
+				sum += array[i];
+			}
+			return sum
+		}
+
+		// generate a random rgba color
+		const randomColor = () => {
+			var o = Math.round, r = Math.random, s = 255;
+			return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + r().toFixed(1) + ')';
+		}
+		// get an array of random rgba colors
+		const getRandomColors = size => {
+			var colors = []
+			for(var i = 0; i < size; i++){
+				colors.push(randomColor());
+			}
+			return colors;
+		}
+		// process the data from the server 
+		// to return a dictionary than can be used for makeChart
+		const process_chart_data = (array_1, array_2) => {
+			var chart_data = {data:[], labels:[]}
+			var i = 0;
+			while(i < array_2.length){
+				let cur_val = array_2[i];
+				let count = count_consec_occur(array_2, i, cur_val);
+				let sum = sum_fr_to(array_1, i, i+count);
+				chart_data["data"].push(sum);
+				chart_data["labels"].push(cur_val)
+				i += count;
+			} 
+			return chart_data;
+		}
+		// some fancy function, i cant explian it for now
+
+		// find all the indices of the target element
+		const findIndices = (items, target) => {
+			let indices = [];
+			items.forEach((item, index) => {
+				if(target == item){
+					indices.push(index);
+				}
+			})
+			return indices;
+		}
+
+		// get the sum of the elements of a given array of indices
+		const sumElementOfIndices = (array, indices_array) => {
+			let sum = 0;
+			indices_array.forEach((index) => {
+				sum += array[index]
+			})
+			return sum;
+		}
+
+		// find all of the indices of the unique elements of the array
+		const findAllIndices = (items, array) => {
+			let unique = items.filter((e, i, a) => a.indexOf(e) == i);
+			let object = {labels:unique, data:[]};
+			unique.forEach((item) => {
+				object["data"].push(sumElementOfIndices(array, findIndices(items, item)));
+			})
+			console.log(object);
+			return object;
+		}
+
+		// convert the raw date
+		const convertDate = (raw_date) => {
+			let month_str = raw_date.substr(0,2);
+			let day_str = raw_date.substr(3,2);
+			return months[parseInt(month_str, 10)] + ' ' + day_str;
+		}
+
+		let interval = document.getElementById('interval');
+		let canvasDiv = document.getElementById('canvas_div_id');
+		let controlDiv = document.getElementById('control-div');
+		let buttonDiv = document.getElementById("button-div");
+		let tableDiv = document.getElementById('table-div');
+		let chartType = document.getElementById('chart-type');
+	</script>
+{% endblock %}

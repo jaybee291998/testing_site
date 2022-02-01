@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}
+	Fund | Allocation/Deallocation
+{% endblock %}
+{% block content %}
+	<h2>Fund Allocation</h2>
+	<b>Fund name: </b> {{fund_name}}<br>
+	<b>Unallocated Balance: </b> {{unallocated_balance}}<br>
+	<b>Fund Amount: </b> {{fund_amount}}<br>
+	{% if errors %}
+		<ul class="list-group">
+		{% for error in errors %}
+			<li class="list-group-item list-group-item-danger">{{error}}</li>
+		{% endfor %}
+		</ul>
+	{% endif %}
+	<form method="POST">
+		{% csrf_token %}
+		{{form.as_p}}
+		<button type="submit">submit</button>
+	</form>
+{% endblock %}

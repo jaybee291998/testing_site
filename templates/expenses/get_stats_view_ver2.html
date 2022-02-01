@@ -1,0 +1,135 @@
+{% extends 'expense_base.html' %}
+
+{% block content %}
+	<h3>Fuck this caching shit</h3>
+	    <label for="interval">Interval:</label>
+	    <select id="interval" onchange="update_chart_wrapper(this)">
+	    	<option value="WEEK">Week</option>
+	    	<option value="MONTH">Month</option>
+	    	<option value="THREEMONTHS">3 Months</option>
+	    </select>
+	<canvas id="myChart"></canvas>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js" integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+	<script type="text/javascript">
+		// get the data from the server
+		const get_data = async () => {
+			const res = await fetch('{{domain}}?interval=' + interval.value);
+			const data = await res.json();
+			console.log(data)
+			return data;
+		}
+		// generate a random rgba color
+		const randomColor = () => {
+			var o = Math.round, r = Math.random, s = 255;
+			return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + r().toFixed(1) + ')';
+		}
+		// get an array of random rgba colors
+		const getRandomColors = size => {
+			var colors = []
+			for(var i = 0; i < size; i++){
+				colors.push(randomColor());
+			}
+			return colors;
+		}
+		// process the data from the server 
+		// to return a dictionary than can be used for makeChart
+		const process_chart_data = (array_1, array_2) => {
+			var chart_data = {data:[], labels:[]}
+			var i = 0;
+			while(i < array_2.length){
+				let cur_val = array_2[i];
+				let count = count_consec_occur(array_2, i, cur_val);
+				let sum = sum_fr_to(array_1, i, i+count);
+				chart_data["data"].push(sum);
+				chart_data["labels"].push(cur_val)
+				i += count;
+			} 
+			return chart_data;
+		}
+
+		// make a chart
+		const update_chart = async (chart) => {
+			
+			var raw_data = await get_data();
+			console.log(raw_data)
+			var chart_data = process_chart_data(raw_data["data"], raw_data["labels"]);
+			month1_dataset = {
+				label: 'month 1 expenses',
+				data: chart_data.data,
+				backgroundColor: getRandomColors(chart_data.data.length),
+				borderWidth: 1
+			}
+			addData(chart, 'love', chart_data.data);
+
+		}
+		function addData(chart, label, data) {
+		    chart.data.labels.push(label);
+		    chart.data.datasets.forEach((dataset) => {
+		        dataset.data.push(data);
+		    });
+		    chart.update();
+		}
+
+		function removeData(chart) {
+		    chart.data.labels.pop();
+		    chart.data.datasets.forEach((dataset) => {
+		        dataset.data.pop();
+		    });
+		    chart.update();
+		}
+		// helper functions 
+
+		// count the consecutive occurence of an element in given index on a given array
+		// ex. arr = [1,2,3,3,3,4,4,5,5,9,9,9]
+		// count_consec_occur(arr, 2, 3) = 3
+		// counts the number of times 3 appears on the array on the index 2
+		const count_consec_occur = (array, start_index, element) => {
+			var occurence_count = 0;
+			for(let i = start_index; i < array.length; i++){
+				var cur_val = array[i];
+				if(cur_val == element){ occurence_count++ }
+				else{ break; }
+			}
+			return occurence_count;
+		}
+		// compute the sum of all the elements of the array
+		// from start index to the end index(exclusive)
+		const sum_fr_to = (array, start_index, end_index) => {
+			sum = 0;
+			for(let i = start_index; i < end_index; i++){
+				sum += array[i];
+			}
+			return sum
+		}
+
+		const update_chart_wrapper = () => {
+			removeData(myChart);
+			update_chart(myChart);
+		}
+		var interval = document.getElementById('interval');
+		var ctx = document.getElementById('myChart')
+
+			month1_dataset = {
+				label: 'month 1 expenses',
+				data: [23],
+				backgroundColor: getRandomColors(1),
+				borderWidth: 1
+			}
+		var myChart = new Chart(ctx,{
+			type: 'bar',
+			data: {
+				labels: ['bar'],
+				datasets: [month1_dataset]
+			},
+			options:{
+				scales:{
+					y:{
+						beginAtZero:true
+					}
+				}
+			}
+		});
+		update_chart(myChart);
+	</script>
+{% endblock %}

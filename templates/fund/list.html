@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}
+	Fund | Home
+{% endblock %}
+{% block content %}
+		<ul class="nav">
+			<li class="nav-item">
+				<a href="{{go_home_link}}" class="nav-link">Home</a>
+			</li>
+		</ul>
+	<p>
+		<b>Unallocated Balance: </b> {{unallocated_balance}}<br>
+		<b>Total Balance: </b> {{total_balance}}<br>
+	</p>
+	<table class="table table-striped">
+		<tr>
+			<th>name</th>
+			<th>description</th>
+			<th>category</th>
+			<th>amount</th>
+		</tr>
+		{% for entry, detail_link in fund_details %}
+			<tr>
+				<td><a href="{{detail_link}}">{{entry.name}}</a></td>
+				<td>{{entry.description}}</td>
+				<td>{{entry.category}}</td>
+				<td>{{entry.amount}}</td>
+			</tr>
+		{% endfor %}
+	</table>
+	<a href="{{add_fund_link}}" class="btn btn-success" role="button">add fund</a>
+{% endblock %}

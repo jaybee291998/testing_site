@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}
+	Fund Tranfer - {{fund.name}}
+{% endblock %}
+{% block content %}
+	<h1>Fund Tranfer</h1>
+	<p>From: {{fund.name}}</p>
+	<p>Current Balance: {{fund.amount}}</p>
+	<form method="POST">
+		{% csrf_token %}
+		{{form.as_p}}
+		<button type="submit" class="btn btn-success">Transfer</button>
+	</form>
+{% endblock %}

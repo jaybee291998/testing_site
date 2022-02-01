@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}
+	Expense | Detail
+{% endblock %}
+{% block content %}
+	<div class="card">
+	    <div class="card-header">
+	        <h5 class="card-title">Expense Details #{{expense.id}}</h5>
+	        {% if not is_expired %}
+	        	<p class="alert alert-warning">You can only update or delete within 12hrs after creation<br>
+	        	If the fund is already in use even within 12hrs of creation, 
+	        	you can longer update or delete this expense</p>
+	        {% else %}
+	        	<p class="alert alert-warning">You can longer update or delete this expense</p>
+	        {% endif %}
+	    </div>
+	    <div class="card-body">
+	    <dl class="row">
+	      <dt class="col-sm-3">Description</dt>
+	      <dd class="col-sm-9">{{ expense.description}}</dd>
+	      <dt class="col-sm-3">Category</dt>
+	      <dd class="col-sm-9">{{expense.category}}</dd>
+	      <dt class="col-sm-3">Price</dt>
+	      <dd class="col-sm-9">{{expense.price}}</dd>
+	      <dt class="col-sm-3">Fund</dt>
+	      <dd class="col-sm-9">{{expense.fund}}</dd>
+	      <dt class="col-sm-3">Date</dt>
+	      <dd class="col-sm-9">{{expense.timestamp}}</dd>
+	    </dl>
+
+	    </div>
+	</div>
+	{% if not is_expired %}
+		<a href="{{update_link}}" class="btn btn-success">update</a>
+		<a href="{{delete_link}}" class="btn btn-danger">delete</a>
+	{% endif %}
+	<a href="{{go_back_link}}" class="btn btn-info">go back</a>
+{% endblock %}

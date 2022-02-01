@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}
+	Expense | Home
+{% endblock %}
+{% block content %}
+		<ul class="nav">
+			<li class="nav-item">
+				<a href="{{go_home_link}}" class="nav-link">Home</a>
+			</li>
+		</ul>
+
+	<form method = "GET">
+	    {{ form }}
+	    <input type = "submit" value = "Submit">
+	</form>
+	<h3>{{entry_date}}</h3>
+	<table class="table table-striped">
+		<tr>
+			<th>description</th>
+			<th>category</th>
+			<th>price</th>
+			<th>fund</th>
+			<th>timestamp</th>
+		</tr>
+		{% for entry, detail_link in expenses_details %}
+			<tr>
+				<td><a href="{{detail_link}}">{{entry.description}}</a></td>
+				<td>{{entry.category}}</td>
+				<td>{{entry.price}}</td>
+				<td>{{entry.fund}}</td>
+				<td>{{entry.timestamp}}</td>
+			</tr>
+		{% endfor %}
+	</table>
+	<p><b>Total: </b>{{total_expenditure}}</p>
+	<a href="{{add_expense_link}}" class="btn btn-success" role="button">add expense</a>
+	<a href="{{stats_link}}" class="btn btn-primary" role="button">Statistics</a>
+	
+	{% if is_paginated %}
+    	{% include "expenses/_pagination.html" %}
+	{% endif %}
+{% endblock %}

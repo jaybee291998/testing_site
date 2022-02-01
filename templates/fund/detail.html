@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}
+	Fund | Detail
+{% endblock %}
+{% block content %}
+	<div class="card">
+	    <div class="card-header">
+	        <h5 class="card-title">Fund Details #{{fund.id}}</h5>
+	        {% if not is_expired %}
+	        	<p class="alert alert-warning">You can only update or delete within 12hrs after creation<br>
+	        	If the fund is already in use even within 12hrs of creation, 
+	        	you can longer update or delete this fund</p>
+	        {% else %}
+	        	<p class="alert alert-warning">You can longer update or delete this fund</p>
+	        {% endif %}
+	    </div>
+	    <div class="card-body">
+	    <dl class="row">
+	      <dt class="col-sm-3">Name</dt>
+	      <dd class="col-sm-9">{{ fund.name}}</dd>
+	      <dt class="col-sm-3">Description</dt>
+	      <dd class="col-sm-9">{{ fund.description}}</dd>
+	      <dt class="col-sm-3">Category</dt>
+	      <dd class="col-sm-9">{{fund.category}}</dd>
+	      <dt class="col-sm-3">Amount</dt>
+	      <dd class="col-sm-9">{{fund.amount}}</dd>
+	      <dt class="col-sm-3">Date</dt>
+	      <dd class="col-sm-9">{{fund.timestamp}}</dd>
+	    </dl>
+
+	    </div>
+	</div>
+	{% if not is_expired %}
+		<a href="{{update_link}}" class="btn btn-success">update</a>
+		<a href="{{delete_link}}" class="btn btn-danger">delete</a>
+	{% endif %}
+	<a href="{{fund_allocation_link}}" class="btn btn-dark">fund allocation</a>
+	<a href="{{fund_transfer_link}}" class="btn btn-dark">fund transfer</a>
+	<a href="{{go_back_link}}" class="btn btn-info">go back</a>
+{% endblock %}

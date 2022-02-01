@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}
+	Income | Home
+{% endblock %}
+{% block content %}
+		<ul class="nav">
+			<li class="nav-item">
+				<a href="{{go_home_link}}" class="nav-link">Home</a>
+			</li>
+		</ul>
+
+	<form method = "GET">
+	    {{ form }}
+	    <input type = "submit" value = "Submit">
+	</form>
+	<h3>{{entry_date}}</h3>
+	<table class="table table-striped">
+		<tr>
+			<th>description</th>
+			<th>category</th>
+			<th>amount</th>
+			<th>source</th>
+			<th>timestamp</th>
+		</tr>
+		{% for entry, detail_link in income_details %}
+			<tr>
+				<td><a href="{{detail_link}}">{{entry.description}}</a></td>
+				<td>{{entry.category}}</td>
+				<td>{{entry.amount}}</td>
+				<td>{{entry.source}}</td>
+				<td>{{entry.timestamp}}</td>
+			</tr>
+		{% endfor %}
+	</table>
+	<p><b>Total: </b>{{total_income}}</p>
+	<a href="{{add_income_link}}" class="btn btn-success" role="button">add income</a>
+	
+	{% if is_paginated %}
+    	{% include "income/_pagination.html" %}
+	{% endif %}
+{% endblock %}

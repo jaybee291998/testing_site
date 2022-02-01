@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}
+	Expense Type | Home
+{% endblock %}
+{% block content %}
+		<ul class="nav">
+			<li class="nav-item">
+				<a href="{{go_home_link}}" class="nav-link">Home</a>
+			</li>
+		</ul>
+	<table class="table table-striped">
+		<tr>
+			<th>name</th>
+			<th>description</th>
+		</tr>
+		{% for entry, detail_link in context_object_details %}
+			<tr>
+				<td><a href="{{detail_link}}">{{entry.name}}</a></td>
+				<td>{{entry.description}}</td>
+			</tr>
+		{% endfor %}
+	</table>
+	<a href="{{add_object_link}}" class="btn btn-success" role="button">add Expense Type</a>
+{% endblock %}
