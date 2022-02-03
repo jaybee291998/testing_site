@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Chart Js</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js" integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+	<canvas id="myChart"></canvas>
+	<script type="text/javascript">
+		var size = 90;
+		var data = [];
+		for(var i = 0; i < size; i++){
+			data.push(Math.floor((Math.random()*20) + 1));
+		}
+		var labels = [];
+		for(var i = 0; i < size; i++){
+			labels.push(i);
+		}
+		var backgroundColor = [];
+		const randomColor = () => {
+			var o = Math.round, r = Math.random, s = 255;
+			return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + r().toFixed(1) + ')';
+		}
+		for(var i = 0; i < size; i++){
+			backgroundColor.push(randomColor());
+		}
+		var ctx = document.getElementById('myChart').getContext('2d');
+		var myChart = new Chart(ctx, {
+			type: 'bar',
+			data: {
+				labels: labels,
+				datasets:[{
+					label: "expenses per category",
+					data: data,
+					backgroundColor: backgroundColor,
+		   //          borderColor: [
+		   //              'rgba(255, 99, 132, 1)',
+		   //              'rgba(54, 162, 235, 1)',
+		   //              'rgba(255, 206, 86, 1)',
+		   //              'rgba(75, 192, 192, 1)',
+		   //              'rgba(153, 102, 255, 1)'
+		   //          ],
+		            borderWidth: 1
+				}]
+			},
+			options: {
+				scales: {
+					y: {
+						beginAtZero: true
+					}
+				}
+			}
+		});
+	</script>
+</body>
+</html>
