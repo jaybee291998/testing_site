@@ -467,3 +467,6 @@ class ExpenseTypeList(generics.ListCreateAPIView):
 	def get_queryset(self):
 		return self.request.user.bank_account.account_expense_type.all()
 
+	def perform_create(self, serializer):
+		serializer.save(account=self.request.user.bank_account)
+
