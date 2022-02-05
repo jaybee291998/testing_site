@@ -30,6 +30,34 @@ class ExpenseSerializer(serializers.ModelSerializer):
 		fund.save()
 		return Expense.objects.create(**validated_data)
 
+	def update(self, instance, validated_data):
+		current_fund = validated_data.get('fund', instance.fund)
+		prev_fund = instance.fund
+
+		current_price = validated_data.get('price', instance.price)
+
+		if current_fund != prev_fund:
+			prev_price = instance.price
+
+			# return the previous expense to the previous fund
+			prev_fund.deposit(prev_price)
+
+			# save the previous fund
+			prev_fund.save()
+		# subtract the current price to the current fund
+		current_fund.withdraw(current_price)
+
+		# save the current fund
+		current_fund.save()
+
+		instance.description = validated_data.get('description', instance.description)
+		instance.category = validated_data.get('category', instance.category)
+		instance.price = validated_data.get('price', instance.price)
+		instance.fund = current_fund
+		instance.save()
+		return instance
+
+
 class ExpenseTypeSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = ExpenseType
