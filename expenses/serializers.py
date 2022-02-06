@@ -15,6 +15,22 @@ class ExpenseSerializer(serializers.ModelSerializer):
 			raise serializers.ValidationError('Price cant be less than or equal to zero.')
 		return value
 
+	def validate_fund(self, value):
+		"""
+			check if the fund being requested is owned by the user
+		"""
+
+		if value.bank_account != self.request.user.bank_account:
+			raise serializers.ValidationError('You do not own this fund')
+		return value
+
+	def validate_category(self, value):
+		"""
+			check if the category requested is owned by the user
+		"""
+		if value.bank_account != self.request.user.bank_account:
+			raise serializers.ValidationError('You do not own this category')
+
 	def validate(self, data):
 		"""
 			checks if the fund to be used has sufficient balance
