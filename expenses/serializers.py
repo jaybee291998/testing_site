@@ -20,7 +20,7 @@ class ExpenseSerializer(serializers.ModelSerializer):
 			check if the fund being requested is owned by the user
 		"""
 
-		if value.bank_account != self.request.user.bank_account:
+		if value.account != self.request.user.bank_account:
 			raise serializers.ValidationError('You do not own this fund')
 		return value
 
@@ -28,7 +28,7 @@ class ExpenseSerializer(serializers.ModelSerializer):
 		"""
 			check if the category requested is owned by the user
 		"""
-		if value.bank_account != self.request.user.bank_account:
+		if value.account != self.request.user.bank_account:
 			raise serializers.ValidationError('You do not own this category')
 
 	def validate(self, data):
