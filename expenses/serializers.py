@@ -19,6 +19,7 @@ class ExpenseSerializer(serializers.ModelSerializer):
 		"""
 			checks if the fund to be used has sufficient balance
 		"""
+		print(self.instance)
 		if data['price'] > data['fund'].amount:
 			raise serializers.ValidationError('Fund {fund.name} has an insufficient balance.\nCurrent balance: {fund.amout}')
 		return data;
@@ -44,11 +45,16 @@ class ExpenseSerializer(serializers.ModelSerializer):
 
 			# save the previous fund
 			prev_fund.save()
-		# subtract the current price to the current fund
-		current_fund.withdraw(current_price)
-
-		# save the current fund
-		current_fund.save()
+		else:
+			# decide how much to deposit back or withdraw
+			if current_price > prev_price:
+				# subtract the current price to the current fund
+				current_fund.withdraw(current_price - prev_price)
+			else:
+				# since the price is equal or lowered deposit back the difference
+				current_fund.deposit(prev_price - current_price)
+			# save the current fund
+			current_fund.save()
 
 		instance.description = validated_data.get('description', instance.description)
 		instance.category = validated_data.get('category', instance.category)
